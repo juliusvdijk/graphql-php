@@ -27,6 +27,7 @@ use const E_USER_DEPRECATED;
  */
 abstract class Type implements JsonSerializable
 {
+    public static $USE_COERCION = false;
     public const STRING  = 'String';
     public const INT     = 'Int';
     public const BOOLEAN = 'Boolean';
@@ -60,7 +61,7 @@ abstract class Type implements JsonSerializable
     public static function id() : ScalarType
     {
         if (! isset(static::$standardTypes[self::ID])) {
-            static::$standardTypes[self::ID] = new IDType();
+            static::$standardTypes[self::ID] = self::$USE_COERCION ? new IDTypeCoercion() : new IDType();
         }
 
         return static::$standardTypes[self::ID];
@@ -72,7 +73,7 @@ abstract class Type implements JsonSerializable
     public static function string() : ScalarType
     {
         if (! isset(static::$standardTypes[self::STRING])) {
-            static::$standardTypes[self::STRING] = new StringType();
+            static::$standardTypes[self::STRING] = self::$USE_COERCION ? new StringTypeCoercion() : new StringType();
         }
 
         return static::$standardTypes[self::STRING];
@@ -96,7 +97,7 @@ abstract class Type implements JsonSerializable
     public static function int() : ScalarType
     {
         if (! isset(static::$standardTypes[self::INT])) {
-            static::$standardTypes[self::INT] = new IntType();
+            static::$standardTypes[self::INT] = self::$USE_COERCION ? new IntTypeCoercion() : new IntType();
         }
 
         return static::$standardTypes[self::INT];
@@ -108,7 +109,7 @@ abstract class Type implements JsonSerializable
     public static function float() : ScalarType
     {
         if (! isset(static::$standardTypes[self::FLOAT])) {
-            static::$standardTypes[self::FLOAT] = new FloatType();
+            static::$standardTypes[self::FLOAT] = self::$USE_COERCION ? new FloatTypeCoercion() : new FloatType();
         }
 
         return static::$standardTypes[self::FLOAT];
